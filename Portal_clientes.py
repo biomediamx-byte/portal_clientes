@@ -18,7 +18,7 @@ st.write("Bienvenido a tu espacio de proyecto. Ingresa tu código de rastreo par
 
 # --- CREDENCIALES (Bóveda de Streamlit) ---
 NOTION_TOKEN = st.secrets["NOTION_TOKEN"]
-DATABASE_ID = st.secrets["NOTION_DATABASE_ID"]
+DATABASE_ID = st.secrets["DATABASE_ID"]
 
 # --- CAJA DE BÚSQUEDA ---
 codigo_input = st.text_input("Código de Proyecto (Ej. r_abc123...):")
@@ -117,4 +117,5 @@ if st.button("Buscar mi Proyecto"):
             else:
                 st.error("Error de conexión con el servidor. Intenta de nuevo más tarde.")
     else:
+
         st.warning("⚠️ Por favor ingresa tu código.")
