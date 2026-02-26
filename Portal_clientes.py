@@ -42,9 +42,6 @@ if st.button("Buscar mi Proyecto"):
                     }
                 }
             }
-                    }
-                }
-            }
             
             url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
             response = requests.post(url, headers=headers, json=payload)
@@ -117,9 +114,7 @@ if st.button("Buscar mi Proyecto"):
                         
                 else:
                     st.error("❌ Código no encontrado. Por favor, verifica que no haya espacios extra.")
-          else:
+            else:
                 st.error(f"Error {response.status_code}: Notion dice -> {response.text}")
     else:
-
         st.warning("⚠️ Por favor ingresa tu código.")
-
