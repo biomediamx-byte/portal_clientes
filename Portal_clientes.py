@@ -33,12 +33,15 @@ if st.button("Buscar mi Proyecto"):
                 "Notion-Version": "2022-06-28"
             }
             
-            # FILTRO EXACTO: Buscando por la columna "Codigo_Cliente" de tu captura
+# FILTRO FLEXIBLE: Buscando por la columna "Codigo_Cliente"
             payload = {
                 "filter": {
                     "property": "Codigo_Cliente",
                     "rich_text": {
-                        "equals": codigo_input.strip()
+                        "contains": codigo_input.strip() # <--- ¡Cambiamos equals por contains!
+                    }
+                }
+            }
                     }
                 }
             }
@@ -114,8 +117,9 @@ if st.button("Buscar mi Proyecto"):
                         
                 else:
                     st.error("❌ Código no encontrado. Por favor, verifica que no haya espacios extra.")
-            else:
-                st.error("Error de conexión con el servidor. Intenta de nuevo más tarde.")
+          else:
+                st.error(f"Error {response.status_code}: Notion dice -> {response.text}")
     else:
 
         st.warning("⚠️ Por favor ingresa tu código.")
+
