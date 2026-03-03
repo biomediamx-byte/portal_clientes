@@ -98,7 +98,7 @@ def set_background(image_file):
 set_background("fondo_portal.png") 
 
 # --- INTERFAZ DEL PORTAL ---
-st.title("🚀 Portal de Clientes Biomedia")
+st.title("Portal de Proyectos")
 st.write("Bienvenido a tu espacio de proyecto. Ingresa tu código de rastreo para ver el estatus en tiempo real.")
 
 # --- CAJA DE BÚSQUEDA ---
@@ -175,7 +175,7 @@ if st.button("Buscar mi Proyecto"):
                         
                         col1, col2 = st.columns(2)
                         col1.metric("📌 Estatus Actual", estatus)
-                        col2.metric("📅 Ingresado el", fecha_ingreso)
+                        col2.metric("📅 Ingresado el               ", fecha_ingreso)
                         
                         st.info("Tus avances se actualizan en tiempo real conforme nuestro equipo avanza en las etapas de tu proyecto.")
                             
@@ -193,3 +193,4 @@ if st.button("Buscar mi Proyecto"):
                 st.error(f"❌ Fallo de conexión con el servidor: {e}")
     else:
         st.warning("⚠️ Por favor ingresa tu código.")
+
