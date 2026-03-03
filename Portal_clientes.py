@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # --- CONFIGURACIÓN DE PÁGINA ---
-st.set_page_config(page_title="Portal de Clientes | Biomedia", page_icon="🚀", layout="centered")
+st.set_page_config(page_title="Portal de Proyectos", page_icon="logo_png.png", layout="centered")
 
 # --- ESTILOS VISUALES (Branding Biomedia) ---
 # Modificado para forzar un fondo blanco y textos negros según la restricción del usuario.
@@ -55,7 +55,7 @@ h1 {
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🚀 Portal de Clientes Biomedia")
+st.title("Portal de Proyectos")
 st.write("Bienvenido a tu espacio de proyecto. Ingresa tu código de rastreo para ver el estatus en tiempo real.")
 
 # --- CREDENCIALES (Bóveda de Streamlit) ---
@@ -172,3 +172,4 @@ if st.button("Buscar mi Proyecto"):
                 st.error(f"❌ Fallo de conexión con el servidor: {e}")
     else:
         st.warning("⚠️ Por favor ingresa tu código.")
+
