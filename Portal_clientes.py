@@ -3,7 +3,7 @@ import requests
 import base64
 
 # --- CONFIGURACIÓN DE PÁGINA ---
-st.set_page_config(page_title="Portal de Clientes | Biomedia", page_icon="🚀", layout="centered")
+st.set_page_config(page_title="Portal de Clientes | Biomedia", page_icon="logo_png.png", layout="centered")
 
 # --- INYECCIÓN DE IMAGEN DE FONDO Y ESTILOS ---
 def set_background(image_file):
@@ -182,3 +182,4 @@ if st.button("Buscar mi Proyecto"):
                 st.error(f"❌ Fallo de conexión con el servidor: {e}")
     else:
         st.warning("⚠️ Por favor ingresa tu código.")
+
