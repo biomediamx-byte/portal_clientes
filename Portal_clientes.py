@@ -6,7 +6,6 @@ import base64
 st.set_page_config(page_title="Portal de Clientes | Biomedia", page_icon="logo_png.png", layout="centered")
 
 # --- CREDENCIALES (Bóveda de Streamlit) ---
-# Asegúrate de tener estas variables en tus 'Secrets' de Streamlit.
 NOTION_TOKEN = st.secrets["NOTION_TOKEN"]
 DATABASE_ID = st.secrets["DATABASE_ID"]
 
@@ -42,7 +41,7 @@ def set_background(image_file):
                 color: #000000 !important;
             }}
             
-            /* 4. Título Principal (Azul Marino Profundo para fondo blanco) */
+            /* 4. Título Principal */
             h1 {{
                 color: #1E4D8A !important;
             }}
@@ -66,30 +65,28 @@ def set_background(image_file):
                 border-radius: 15px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 
-                /* 🚀 NUEVO: Empujar el contenido principal hacia abajo 🚀 */
-                /* Esto crea espacio para el logo centrado en la imagen de fondo original */
+                /* 🚀 Empujar el contenido principal hacia abajo para no tapar tu logo 🚀 */
                 margin-top: 250px; 
             }}
             
             /* 7. ARREGLAR LA CAJA DE TEXTO (INPUT) */
-            /* Forzar fondo blanco y texto negro para el campo de entrada */
-            div[data-testid="stTextInput"] input {
+            /* ¡CORREGIDO: LLAVES DOBLES PARA EVITAR EL NAMEERROR! */
+            div[data-testid="stTextInput"] input {{
                 background-color: #FFFFFF !important;
                 color: #000000 !important;
                 border: 1px solid #1E4D8A !important;
                 border-radius: 5px !important;
-            }
+            }}
             
             /* Asegurar que el placeholder sea legible */
-            div[data-testid="stTextInput"] input::placeholder {
+            div[data-testid="stTextInput"] input::placeholder {{
                 color: rgba(0, 0, 0, 0.5) !important;
-            }
+            }}
             
             /* Asegurar que el icono de búsqueda o emoji sea legible (si existe) */
-            div[data-testid="stTextInput"] div[data-baseweb="input"] svg {
+            div[data-testid="stTextInput"] div[data-baseweb="input"] svg {{
                 color: #000000 !important;
-            }
-
+            }}
             </style>
             """,
             unsafe_allow_html=True
@@ -97,18 +94,14 @@ def set_background(image_file):
     except FileNotFoundError:
         st.warning("⚠️ No se encontró la imagen de fondo. Asegúrate de subirla a GitHub con el nombre correcto.")
 
-# 🔴 ATENCIÓN: Cambia "fondo_portal.png" por el nombre exacto de tu imagen en GitHub
-# Dado que es una plantilla blanca con el logo centrado, moveré el contenido hacia abajo.
+# 🔴 ATENCIÓN: Asegúrate de que el nombre coincida con tu imagen
 set_background("fondo_portal.png") 
 
 # --- INTERFAZ DEL PORTAL ---
-# El título principal H1, ahora será azul marino y el texto de abajo será negro.
 st.title("🚀 Portal de Clientes Biomedia")
 st.write("Bienvenido a tu espacio de proyecto. Ingresa tu código de rastreo para ver el estatus en tiempo real.")
 
 # --- CAJA DE BÚSQUEDA ---
-# El label "🔑 Código de Proyecto" ahora será negro gracias al CSS inyectado.
-# El input box tendrá fondo blanco y texto negro.
 codigo_input = st.text_input("🔑 Código de Proyecto (Ej. r_abc123...):")
 
 if st.button("Buscar mi Proyecto"):
@@ -121,8 +114,6 @@ if st.button("Buscar mi Proyecto"):
                 "Notion-Version": "2022-06-28"
             }
             
-            # FILTRO FLEXIBLE: Buscando por la columna "Codigo_Cliente"
-            # Cambiamos "equals" por "contains" para mayor flexibilidad.
             payload = {
                 "filter": {
                     "property": "Codigo_Cliente",
@@ -143,12 +134,8 @@ if st.button("Buscar mi Proyecto"):
                     
                     if len(resultados) > 0:
                         st.success("¡Proyecto encontrado!")
-                        
                         proyecto = resultados[0]["properties"]
                         
-                        # --- MAPEO EXACTO DE COLUMNAS DE NOTION ---
-                        
-                        # 1. Extraer Nombre (La API de Notion cambia si es la columna principal 'title' o 'rich_text')
                         try:
                             if "title" in proyecto["Nombre"]:
                                 nombre_cliente = proyecto["Nombre"]["title"][0]["text"]["content"]
@@ -157,7 +144,6 @@ if st.button("Buscar mi Proyecto"):
                         except Exception:
                             nombre_cliente = "Cliente VIP"
 
-                        # 2. Extraer Empresa
                         try:
                             if "title" in proyecto["Empresa"]:
                                 empresa_cliente = proyecto["Empresa"]["title"][0]["text"]["content"]
@@ -166,42 +152,33 @@ if st.button("Buscar mi Proyecto"):
                         except Exception:
                             empresa_cliente = "Tu Proyecto"
                             
-                        # 3. Extraer Status (Asegúrate de tener una columna llamada 'Estado' en Notion)
                         try:
                             estatus = proyecto["Estado"]["status"]["name"] 
                         except Exception:
                             try:
-                                # Por si lo tienes como Select en lugar de Status
                                 estatus = proyecto["Estado"]["select"]["name"]
                             except Exception:
                                 estatus = "En proceso / Por definir"
                             
-                        # 4. Extraer Fecha (Esta es la que entra desde Tally)
                         try:
                             fecha_ingreso = proyecto["Fecha"]["date"]["start"]
                         except Exception:
                             fecha_ingreso = "Fecha no registrada"
                             
-                        # 5. Extraer link de Drive (Asegúrate de crear una columna tipo URL llamada 'Link Drive' en Notion)
                         try:
                             link_drive = proyecto["Link Drive"]["url"]
                         except Exception:
                             link_drive = None
                         
-                        # --- INTERFAZ DE RESULTADOS ---
                         st.divider()
-                        # Subheader (👤 Frida...) y Texto Informativo serán negros.
                         st.subheader(f"👤 {nombre_cliente} | 🏢 {empresa_cliente}")
                         
                         col1, col2 = st.columns(2)
-                        # Metric y Metric Value ahora serán negros.
                         col1.metric("📌 Estatus Actual", estatus)
                         col2.metric("📅 Ingresado el", fecha_ingreso)
                         
-                        # Info box tendrá texto negro.
                         st.info("Tus avances se actualizan en tiempo real conforme nuestro equipo avanza en las etapas de tu proyecto.")
                             
-                        # El link de Google Drive tendrá icono y texto negro.
                         if link_drive:
                             st.markdown(f"### 📂 [Clic aquí para acceder a tu carpeta de Google Drive]({link_drive})")
                         else:
@@ -210,7 +187,6 @@ if st.button("Buscar mi Proyecto"):
                     else:
                         st.error("❌ Código no encontrado. Por favor, verifica que no haya espacios extra.")
                 else:
-                    # Diagnóstico detallado si la API falla
                     st.error(f"Error {response.status_code}: Notion dice -> {response.text}")
                     
             except requests.exceptions.RequestException as e:
